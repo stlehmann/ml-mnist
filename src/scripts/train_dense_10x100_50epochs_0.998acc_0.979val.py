@@ -29,13 +29,13 @@ SEED = 42
 np.random.seed(SEED)
 tf.random.set_seed(SEED)
 
-results_p = pyprojroot.here("results/" + os.path.basename(__file__).split(".")[0], [".here"])
+results_p = pyprojroot.here("results/" + os.path.basename(__file__)[:-3], [".here"])
 
 # %%
 # load mnist dataset
 (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
-X_train = (X_train.astype(np.float32) / 255.0)
-X_test= (X_test.astype(np.float32) / 255.0)
+X_train = X_train.astype(np.float32) / 255.0
+X_test = X_test.astype(np.float32) / 255.0
 
 y_train = tf.keras.utils.to_categorical(y_train, num_classes=10, dtype="uint8")
 y_test = tf.keras.utils.to_categorical(y_test, num_classes=10, dtype="uint8")
@@ -43,13 +43,13 @@ y_test = tf.keras.utils.to_categorical(y_test, num_classes=10, dtype="uint8")
 
 # %%
 def create_dense_model(
-        input_shape: Tuple[int, int] = (64, 64),
-        n_hidden: int = 1,
-        n_units: int = 7,
-        activation: Union[str, Callable] = "relu",
-        optimizer: Union[str, tf.keras.optimizers.Optimizer] = "adam",
-        loss: Union[str, tf.keras.losses.Loss] = "binary_crossentropy",
-        metrics=None,
+    input_shape: Tuple[int, int] = (64, 64),
+    n_hidden: int = 1,
+    n_units: int = 7,
+    activation: Union[str, Callable] = "relu",
+    optimizer: Union[str, tf.keras.optimizers.Optimizer] = "adam",
+    loss: Union[str, tf.keras.losses.Loss] = "binary_crossentropy",
+    metrics=None,
 ) -> tf.keras.Model:
     """Create a dense model.
 
@@ -70,6 +70,7 @@ def create_dense_model(
     model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
     return model
 
+
 # %%
 
 model = create_dense_model(
@@ -79,15 +80,10 @@ model = create_dense_model(
     activation="relu",
     optimizer=tf.keras.optimizers.Adam(lr=0.001),
     loss="categorical_crossentropy",
-    metrics=["accuracy"]
+    metrics=["accuracy"],
 )
 
-history = model.fit(
-    X_train,
-    y_train,
-    epochs=50,
-    validation_data=(X_test, y_test),
-)
+history = model.fit(X_train, y_train, epochs=50, validation_data=(X_test, y_test))
 
 # %%
 
@@ -97,6 +93,6 @@ plt.xlabel("epochs")
 plt.ylabel("accuracy")
 plt.legend()
 
-os.makedirs(results_p)
+os.makedirs(str(results_p))
 plt.savefig(results_p / "accuracy.png", dpi=300)
 plt.show()
