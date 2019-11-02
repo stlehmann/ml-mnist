@@ -33,11 +33,27 @@ def load_data() -> Tuple[Tuple[np.ndarray, ...], Tuple[np.ndarray, ...]]:
     return (X_train, y_train), (X_test, y_test)
 
 
-def plot_accuracy(history) -> None:
+def plot_history(history) -> None:
     """Plot accuracy and validation accuracy."""
     sns.set()
+    fig = plt.figure(figsize=(10, 3))
+
+    fig.add_subplot(121)
+    sns.lineplot(data=np.array(history.history["loss"]), label="loss")
+    sns.lineplot(data=np.array(history.history["val_loss"]), label="val_loss")
+    loss = history.history["loss"][-1]
+    val_loss = history.history["val_loss"][-1]
+    plt.title(f"Model loss: {loss:.3f} / {val_loss:.3f}")
+    plt.xlabel("epochs")
+    plt.ylabel("loss")
+    plt.legend()
+
+    fig.add_subplot(122)
     sns.lineplot(data=np.array(history.history["accuracy"]), label="accuracy")
     sns.lineplot(data=np.array(history.history["val_accuracy"]), label="val_accuracy")
+    accuracy = history.history["accuracy"][-1]
+    val_accuracy = history.history["val_accuracy"][-1]
+    plt.title(f"Model accuracy: {accuracy:.3f} / {val_accuracy:.3f}")
     plt.xlabel("epochs")
     plt.ylabel("accuracy")
     plt.legend()
