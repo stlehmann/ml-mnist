@@ -36,7 +36,7 @@ def load_data() -> Tuple[Tuple[np.ndarray, ...], Tuple[np.ndarray, ...]]:
 def plot_history(history) -> None:
     """Plot accuracy and validation accuracy."""
     sns.set()
-    fig = plt.figure(figsize=(10, 3))
+    fig = plt.figure(figsize=(12, 3.5))
 
     fig.add_subplot(121)
     sns.lineplot(data=np.array(history.history["loss"]), label="loss")
