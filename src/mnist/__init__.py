@@ -1,19 +1,20 @@
+import pickle
 from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 import seaborn as sns
-
+import tensorflow as tf
 
 __version__ = "0.0.1"
 
 
+n_rows, n_cols = 28, 28
+n_classes = 10
+
+
 def load_data() -> Tuple[Tuple[np.ndarray, ...], Tuple[np.ndarray, ...]]:
     """Load MNIST data, normalize it and convert labels to categorical."""
-    n_rows, n_cols = 28, 28
-    n_classes = 10
-
     # import train and test data
     (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
 
@@ -31,6 +32,7 @@ def load_data() -> Tuple[Tuple[np.ndarray, ...], Tuple[np.ndarray, ...]]:
 
     return (X_train, y_train), (X_test, y_test)
 
+
 def plot_accuracy(history) -> None:
     """Plot accuracy and validation accuracy."""
     sns.set()
@@ -39,3 +41,21 @@ def plot_accuracy(history) -> None:
     plt.xlabel("epochs")
     plt.ylabel("accuracy")
     plt.legend()
+
+
+def load_handwritten(fn: str) -> Tuple[np.ndarray, np.ndarray]:
+    """Load handwritten data."""
+    # import
+    with open(fn, "rb") as f:
+        X_hw, y_hw = pickle.load(f)
+
+    # reshape
+    X_hw = X_hw.reshape(X_hw.shape[0], n_rows, n_cols, 1)
+
+    # normalize
+    X_hw = 1.0 - (X_hw.astype("float32") / 255.0)
+
+    # categorize
+    y_hw = tf.keras.utils.to_categorical(y_hw, n_classes)
+
+    return X_hw, y_hw
