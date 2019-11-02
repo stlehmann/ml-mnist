@@ -6,7 +6,6 @@ setup(
     packages=["mnist"],
     install_requires=[],
     entry_points={
-        "console_scripts": [
-        ]
+        "console_scripts": []
     }
 )
