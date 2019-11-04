@@ -14,3 +14,4 @@ CNN with 1 conv. layers                 |98.2%
 CNN with 2 conv. layers                 |98.7%
 CNN with 2 conv. layers and dropout     |98.7%
 CNN with 2 conv. layers, dropout and batchnorm. |98.9%
+fastai Resnet18                         |99.5%
